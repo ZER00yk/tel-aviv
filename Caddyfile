@@ -1,0 +1,12 @@
+{$DOMAIN} {
+  encode zstd gzip
+  handle /socket.io/* {
+    reverse_proxy realtime:3001
+  }
+  handle {
+    reverse_proxy web:3000 {
+      header_up X-Tell-Aviv-Proxy-Secret {$AUTH_TRUSTED_PROXY_SECRET}
+      header_up X-Tell-Aviv-Client-IP {remote_host}
+    }
+  }
+}

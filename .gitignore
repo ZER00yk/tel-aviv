@@ -1,0 +1,23 @@
+node_modules/
+.next/
+.next-dev/
+.env
+.env.local
+apps/web/.env.local
+.env*
+**/.env*
+!.env.example
+!**/.env.example
+.data/
+coverage/
+playwright-report/
+test-results/
+*.log
+*.tsbuildinfo
+
+.local/
+
+.npmrc
+
+# Keep independently named browser artifacts out of source snapshots.
+test-results*/

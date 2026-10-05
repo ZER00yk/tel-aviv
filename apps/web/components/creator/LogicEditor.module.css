@@ -1,0 +1,249 @@
+.editor {
+  display: grid;
+  gap: 18px;
+  border-top: 1px solid #43506e;
+  padding-top: 24px;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.heading h2,
+.heading h3,
+.heading p {
+  margin: 0;
+}
+.heading p,
+.small,
+.help p,
+.nested p {
+  color: #b1bad0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.heading h3 span {
+  color: #b1bad0;
+  font-size: 12px;
+  font-weight: normal;
+  margin-left: 8px;
+}
+.pill {
+  font-size: 12px;
+  background: #233f40;
+  border: 1px solid #477777;
+  color: #b4e9dc;
+  padding: 7px 10px;
+  border-radius: 20px;
+}
+.help {
+  padding: 13px 16px;
+  background: #202c43;
+  border: 1px solid #41516b;
+  border-radius: 12px;
+}
+.help summary {
+  cursor: pointer;
+  color: #cedcf7;
+}
+.variables {
+  display: grid;
+  gap: 12px;
+  background: #172239;
+  border: 1px solid #364d69;
+  border-radius: 14px;
+  padding: 18px;
+}
+.variableRow {
+  display: grid;
+  grid-template-columns:
+    minmax(130px, 1fr) minmax(160px, 1fr) minmax(130px, 1fr)
+    auto;
+  gap: 12px;
+  align-items: end;
+}
+.block {
+  border: 1px solid #485778;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  gap: 18px;
+  background: #172139;
+}
+.disabled {
+  opacity: 0.7;
+  border-style: dashed;
+}
+.blockHeading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.blockName {
+  flex: 1 1 160px;
+}
+.ordinal {
+  border-radius: 50%;
+  background: #383757;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  color: #e4dbff;
+  font-size: 13px;
+}
+.checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 7px !important;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.controls button {
+  padding: 6px 9px !important;
+  font-size: 12px !important;
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+.step {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.step > strong {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  padding: 8px 5px;
+  text-align: center;
+}
+.when {
+  background: #254057;
+  color: #9dddff;
+}
+.if {
+  background: #4b3d25;
+  color: #ffda94;
+}
+.then {
+  background: #25453e;
+  color: #a1e9c4;
+}
+.stepContent {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  min-width: 0;
+}
+.stepContent > *,
+.condition {
+  width: 100%;
+  min-width: 0;
+}
+.stepContent > button {
+  width: auto;
+}
+.condition {
+  display: grid;
+  gap: 12px;
+}
+.nested {
+  border-left: 3px solid #80745a;
+  padding: 0 0 0 14px;
+  display: grid;
+  gap: 12px;
+}
+.nested p {
+  margin: 0;
+}
+.child {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #46516a;
+  background: #202a40;
+  padding: 12px;
+  border-radius: 9px;
+}
+.action {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #385953;
+  border-radius: 10px;
+  background: #1c2b3b;
+}
+.action .controls {
+  grid-column: 2;
+}
+.actionNumber {
+  color: #9dbeb0;
+  padding-top: 28px;
+  font-size: 13px;
+}
+.empty {
+  color: #acb7ce;
+  font-size: 14px;
+  margin: 4px 0;
+}
+.small {
+  margin: 0;
+}
+.error {
+  border: 1px solid #9f5b69;
+  color: #ffd5de;
+  background: #3a2636;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+.error ul {
+  margin: 7px 0 0;
+  padding-left: 20px;
+}
+@media (max-width: 760px) {
+  .variableRow {
+    grid-template-columns: 1fr 1fr;
+  }
+  .step {
+    grid-template-columns: 1fr;
+  }
+  .step > strong {
+    justify-self: start;
+    min-width: 54px;
+  }
+  .block,
+  .variables {
+    padding: 12px;
+  }
+  .fields {
+    grid-template-columns: 1fr;
+  }
+  .action {
+    grid-template-columns: 16px minmax(0, 1fr);
+    padding: 10px;
+  }
+  .nested {
+    padding-left: 8px;
+  }
+}
+@media (max-width: 420px) {
+  .variableRow {
+    grid-template-columns: 1fr;
+  }
+}

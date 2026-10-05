@@ -1,0 +1,114 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: tellaviv
+      POSTGRES_DB: tellaviv
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a unique database password}
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U tellaviv -d tellaviv]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --appendonly, 'yes']
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  web:
+    image: ${TELL_AVIV_IMAGE:-tell-aviv:local}
+    build:
+      context: .
+      target: application
+    environment: &application
+      NODE_ENV: production
+      DATABASE_URL: postgres://tellaviv:${POSTGRES_PASSWORD}@postgres:5432/tellaviv
+      REDIS_URL: redis://redis:6379
+      APP_URL: ${APP_URL:-https://${DOMAIN:?Set your HTTPS domain}}
+      DEV_AUTH: 'false'
+      AUTH_TRUSTED_PROXY_SECRET: ${AUTH_TRUSTED_PROXY_SECRET:?Set a random proxy proof secret of at least 32 bytes}
+      AUTH_ARGON_MEMORY_KIB: ${AUTH_ARGON_MEMORY_KIB:-65536}
+      AUTH_ARGON_TIME_COST: ${AUTH_ARGON_TIME_COST:-3}
+      AUTH_ARGON_PARALLELISM: ${AUTH_ARGON_PARALLELISM:-1}
+      EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
+      EMAIL_API_KEY: ${EMAIL_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+      METRICS_SCRAPE_TOKEN: ${METRICS_SCRAPE_TOKEN:-}
+      STORAGE_LOCAL_PATH: /data/uploads
+      REALTIME_PORT: '3001'
+      REALTIME_HEALTH_URL: http://realtime:3001/health
+      REALTIME_NAMESPACE: ${REALTIME_NAMESPACE:-tell-aviv}
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    volumes: [uploads:/data/uploads]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      start_period: 20s
+      retries: 12
+    restart: unless-stopped
+  realtime:
+    image: ${TELL_AVIV_IMAGE:-tell-aviv:local}
+    build:
+      context: .
+      target: application
+    command: [pnpm, exec, tsx, apps/realtime/src/index.ts]
+    environment: *application
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3001/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      start_period: 20s
+      retries: 12
+    restart: unless-stopped
+  operations:
+    image: ${TELL_AVIV_OPERATIONS_IMAGE:-tell-aviv-operations:local}
+    build:
+      context: .
+      target: operations
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://tellaviv:${POSTGRES_PASSWORD}@postgres:5432/tellaviv
+      REDIS_URL: redis://redis:6379
+      STORAGE_LOCAL_PATH: /data/uploads
+      BACKUP_PATH: /data/backups
+      BACKUP_ENABLED: ${BACKUP_ENABLED:-true}
+      BACKUP_EVERY_HOURS: ${BACKUP_EVERY_HOURS:-24}
+      BACKUP_RETAIN_DAYS: ${BACKUP_RETAIN_DAYS:-14}
+      BACKUP_MIN_KEEP: ${BACKUP_MIN_KEEP:-7}
+      OPS_INTERVAL_SECONDS: ${OPS_INTERVAL_SECONDS:-60}
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    volumes: [uploads:/data/uploads, backups:/data/backups]
+    restart: unless-stopped
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      DOMAIN: ${DOMAIN}
+      AUTH_TRUSTED_PROXY_SECRET: ${AUTH_TRUSTED_PROXY_SECRET:?Set the same proxy proof secret}
+    ports: ['${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:80', '${HTTPS_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:443']
+    volumes: [./Caddyfile:/etc/caddy/Caddyfile:ro, caddy-data:/data, caddy-config:/config]
+    depends_on:
+      web: {condition: service_healthy}
+      realtime: {condition: service_healthy}
+    restart: unless-stopped
+volumes:
+  postgres-data:
+  redis-data:
+  uploads:
+  backups:
+  caddy-data:
+  caddy-config:

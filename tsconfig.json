@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tell-aviv/shared": ["packages/shared/src/index.ts"],
+      "@tell-aviv/database": ["packages/database/src/index.ts"],
+      "@tell-aviv/auth": ["packages/auth/src/index.ts"],
+      "@tell-aviv/game-sdk": ["packages/game-sdk/src/index.ts"],
+      "@tell-aviv/game-runtime": ["packages/game-runtime/src/index.ts"],
+      "@tell-aviv/games": ["games/registry.ts"]
+    }
+  },
+  "include": [
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "games/**/*.ts",
+    "games/**/*.tsx",
+    "tests/**/*.ts",
+    "scripts/**/*.ts",
+    "*.ts"
+  ],
+  "exclude": ["node_modules", "**/.next/**", "**/.next-dev/**"]
+}

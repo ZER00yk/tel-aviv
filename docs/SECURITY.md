@@ -1,0 +1,11 @@
+# Security boundaries
+
+All private API routes require a valid server-managed session. Tokens are cryptographically random, only SHA-256 digests persist, cookies are HttpOnly/SameSite=Lax and Secure in production. Mutations require a matching Origin and JSON content type, except authenticated validated multipart uploads. Production requires HTTPS APP_URL and disables development login even if DEV_AUTH is set. Development authentication impersonates local test usernames deliberately and must never be exposed as public authentication.
+
+Native accounts use Argon2id (64 MiB, three passes by default), bounded password work, opaque rotating sessions and recent-auth guards. Optional private email must be verified before recovery; verification/reset tokens and recovery codes persist only as digests and consume once. Reset links use URL fragments, and admitted recovery requests share a response floor and bounded delivery deadline. Public/profile/game DTOs omit private email and authentication material. See [AUTHENTICATION](AUTHENTICATION.md).
+
+School authorization checks owner or explicit resource permission before reading, modifying, searching, restoring, sharing or downloading. Search and profiles must not accidentally expand this boundary. Games receive only their safe identity and namespaced game data.
+
+Economy actions, payouts, achievement criteria and ranked outcomes are server-owned. Every currency delta records a ledger row inside its balance transaction. Generic game saves cannot set these balances. Realtime authentication and room membership checks belong on the server; hidden roles use per-player projections rather than hidden browser fields.
+
+Anonymous authentication limits use durable global/identity windows and source IP only when the proxy supplies a configured secret proof; unverified forwarded headers are ignored. Caddy overwrites proof/client-IP headers, and direct application ports stay private. Production CSP uses a fresh per-request nonce and strict dynamic scripts without unsafe-eval; styles permit inline layout for existing UI/KaTeX. Framing, object sources, base URLs, MIME sniffing and device permissions are constrained. Local evidence and remaining production/provider/device validation are recorded in the current verification report; these checks do not establish a completed security audit.

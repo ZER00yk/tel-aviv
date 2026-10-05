@@ -1,0 +1,8 @@
+.standings {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.standings table {
+  width: 100%;
+  min-width: 460px;
+}

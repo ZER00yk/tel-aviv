@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+**/.next
+**/.next-dev
+.git
+.env*
+**/.env*
+!.env.example
+.npmrc
+.local
+.data
+test-results*
+playwright-report
+*.log
+*.pem
+*.key
+*.tsbuildinfo

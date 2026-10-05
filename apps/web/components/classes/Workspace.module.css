@@ -1,0 +1,229 @@
+.workspace {
+  --accent: #a4a0ff;
+  color: var(--text, #edf0ff);
+  display: grid;
+  gap: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.header h1,
+.header h2,
+.header h3 {
+  margin: 0;
+}
+.muted {
+  color: #a7aec8;
+  font-size: 14px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 20px;
+  min-height: 560px;
+}
+.sidebar,
+.panel {
+  background: rgba(20, 25, 45, 0.72);
+  border: 1px solid #303750;
+  border-radius: 18px;
+  padding: 20px;
+  min-width: 0;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.stack {
+  display: grid;
+  gap: 14px;
+}
+.workspace button {
+  border: 1px solid #3a425e;
+  background: #252d48;
+  color: #edf0ff;
+  padding: 9px 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+}
+.workspace button:hover {
+  background: #394267;
+}
+.workspace button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.workspace input,
+.workspace textarea,
+.workspace select {
+  font: inherit;
+  background: #11182c;
+  color: #eef0ff;
+  border: 1px solid #3c4561;
+  border-radius: 9px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+.workspace input:not([type="checkbox"]):not([type="color"]),
+.workspace textarea {
+  width: 100%;
+}
+.workspace textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+.workspace label {
+  display: grid;
+  gap: 6px;
+  color: #bbc2da;
+  font-size: 14px;
+}
+.active {
+  border-color: #a4a0ff !important;
+  background: #363257 !important;
+}
+.primary {
+  background: #7366da !important;
+  border-color: #a194ef !important;
+}
+.error {
+  color: #ffb6b6;
+  border: 1px solid #aa5b60;
+  padding: 12px;
+  border-radius: 10px;
+  background: #3e2431;
+}
+.success {
+  color: #a5e7c2;
+  font-size: 13px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+.card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  border: 1px solid #38405b;
+  background: #1a223a;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+.card h3,
+.card p {
+  margin: 0;
+}
+.editor {
+  font-family: ui-monospace, SFMono-Regular, monospace !important;
+  min-height: 340px !important;
+  line-height: 1.7;
+}
+.preview {
+  overflow-wrap: anywhere;
+  min-height: 160px;
+  line-height: 1.7;
+  background: #11182c;
+  border-radius: 10px;
+  padding: 20px;
+}
+.preview pre {
+  overflow: auto;
+  background: #080f20;
+  padding: 14px;
+  border-radius: 8px;
+}
+.preview a {
+  color: #beb6ff;
+}
+.preview table {
+  border-collapse: collapse;
+}
+.preview th,
+.preview td {
+  padding: 6px 12px;
+  border: 1px solid #47506c;
+}
+.preview blockquote {
+  border-left: 3px solid #998bdd;
+  margin-left: 0;
+  padding-left: 16px;
+  color: #bac2df;
+}
+.toolbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.divider {
+  border: 0;
+  border-top: 1px solid #353c57;
+  margin: 18px 0;
+}
+.empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: #a7aec8;
+}
+.study {
+  padding: 36px;
+  min-height: 220px;
+  text-align: center;
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  border: 1px solid #8177be;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #303453, #332643);
+}
+.notice {
+  border: 1px solid #4f477a;
+  background: #27243f;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  color: #d5cefa;
+}
+.canvas {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(#111d38, #253459);
+  border: 1px solid #526083;
+  border-radius: 10px;
+  overflow: hidden;
+  touch-action: none;
+}
+.canvas svg {
+  width: 100%;
+  display: block;
+}
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .panel {
+    padding: 14px;
+  }
+  .header {
+    align-items: start;
+  }
+}
